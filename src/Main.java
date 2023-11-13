@@ -9,6 +9,9 @@ import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.Scanner;
 import javax.naming.ldap.StartTlsResponse;
+import java.util.Date; 
+import java.text.SimpleDateFormat;
+import java.text.ParseException;
 
 public class Main {
     public static Scanner input = new Scanner(System.in);
@@ -125,7 +128,7 @@ public class Main {
                     String dropManufacturer = "drop table if exists manufacturer";
                     String dropPart = "drop table if exists part";
                     String dropSalesperson = "drop table if exists salesperson";
-                    String dropTransaction = "drop table if exists transcation";
+                    String dropTransaction = "drop table if exists transaction";
                     
                     String EnableFK = "set foreign_key_checks = 1";
                     try {
@@ -163,7 +166,7 @@ public class Main {
                             String st;
                             int count = 0;
                             while ((st = br.readLine()) != null) {
-                                categoryInfo[count] = st.split(",");
+                                categoryInfo[count] = st.split("\t");
                                 count++;
                             }
                             br.close();
@@ -177,7 +180,7 @@ public class Main {
                         String st;
                         int count = 0;
                         while ((st = br.readLine()) != null) {
-                            manufacturerInfo[count] = st.split(",");
+                            manufacturerInfo[count] = st.split("\t");
                             count++;
                         }
                         br.close();
@@ -191,7 +194,7 @@ public class Main {
                         String st;
                         int count = 0;
                         while ((st = br.readLine()) != null) {
-                            partInfo[count] = st.split(",");
+                            partInfo[count] = st.split("\t");
                             count++;
                         }
                         br.close();
@@ -205,7 +208,7 @@ public class Main {
                         String st;
                         int count = 0;
                         while ((st = br.readLine()) != null) {
-                            salespersonInfo[count] = st.split(",");
+                            salespersonInfo[count] = st.split("\t");
                             count++;
                         }
                         br.close();
@@ -219,7 +222,7 @@ public class Main {
                         String st;
                         int count = 0;
                         while ((st = br.readLine()) != null) {
-                            transactionInfo[count] = st.split(",");
+                            transactionInfo[count] = st.split("\t");
                             count++;
                         }
                         br.close();
@@ -240,12 +243,57 @@ public class Main {
                         PreparedStatement manufacturerPS = mysql.prepareStatement(manufacturerInsert);
                         PreparedStatement partPS = mysql.prepareStatement(partInsert);
                         PreparedStatement salespersonPS = mysql.prepareStatement(salespersonInsert);
-                        PreparedStatement transcationPS = mysql.prepareStatement(transactionInsert);
-                        
+                        PreparedStatement transactionPS = mysql.prepareStatement(transactionInsert);
+                        for(int i = 0; categoryInfo[i] != null; i++) {
+                            categoryPS.setInt(1, Integer.parseInt(categoryInfo[i][0]));
+                            categoryPS.setString(2, categoryInfo[i][1]);
+                            categoryPS.executeUpdate();
+                        }
+                        for(int i = 0; manufacturerInfo[i][0] != null; i++) {
+                            manufacturerPS.setInt(1, Integer.parseInt(manufacturerInfo[i][0]));
+                            manufacturerPS.setString(2, manufacturerInfo[i][1]);
+                            manufacturerPS.setString(3, manufacturerInfo[i][2]);
+                            manufacturerPS.setInt(4,Integer.parseInt(manufacturerInfo[i][3]));
+                            manufacturerPS.executeUpdate();
+                        }
+                        for(int i = 0; partInfo[i][0] != null; i++) {
+                            partPS.setInt(1, Integer.parseInt(partInfo[i][0]));
+                            partPS.setString(2, partInfo[i][1]);
+                            partPS.setString(3, partInfo[i][2]);
+                            partPS.setInt(4,Integer.parseInt(partInfo[i][3]));
+                            partPS.setInt(5,Integer.parseInt(partInfo[i][4]));
+                            partPS.setInt(6,Integer.parseInt(partInfo[i][5]));
+                            partPS.setInt(7,Integer.parseInt(partInfo[i][6]));
+                            partPS.executeUpdate();
+                        }
+                        for(int i = 0; salespersonInfo[i][0] != null; i++) {
+                            salespersonPS.setInt(1, Integer.parseInt(salespersonInfo[i][0]));
+                            salespersonPS.setString(2, salespersonInfo[i][1]);
+                            salespersonPS.setString(3, partInfo[i][2]);
+                            salespersonPS.setInt(4,Integer.parseInt(partInfo[i][3]));
+                            salespersonPS.setInt(5,Integer.parseInt(partInfo[i][4]));
+                            salespersonPS.executeUpdate();
+                        }
+                        for(int i = 0; transactionInfo[i][0] != null; i++) {
+                            SimpleDateFormat formatter = new SimpleDateFormat("DD/MM/YYYY");
+                            java.util.Date date = formatter.parse(transactionInfo[i][3]);
+                            java.sql.Date sqlDate = new java.sql.Date(date.getTime());
+                            transactionPS.setInt(1, Integer.parseInt(transactionInfo[i][0]));
+                            transactionPS.setInt(2, Integer.parseInt(salespersonInfo[i][1]));
+                            transactionPS.setInt(3, Integer.parseInt(transactionInfo[i][2]));
+                            salespersonPS.setDate(4,sqlDate);
+                            salespersonPS.executeUpdate();
+                        }
                     } catch(Exception e) {
                         System.out.println(e);
                     }
                     break;
+                case 4:
+
+                case 5:
+                    return;
+                default:
+                    System.out.println("[ERROR] Invalid Input");
             }
         } while(true);
     }
