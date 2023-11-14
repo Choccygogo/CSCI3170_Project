@@ -9,6 +9,8 @@ import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.Scanner;
 import javax.naming.ldap.StartTlsResponse;
+
+import java.util.Calendar;
 import java.util.Date; 
 import java.text.SimpleDateFormat;
 import java.text.ParseException;
@@ -99,17 +101,17 @@ public class Main {
                                 + "sid integer, "
                                 + "sName char(20), "
                                 + "sAddress char(50), "
-                                + "sPhoneNumber integer,"
+                                + "sPhoneNumber integer, "
                                 + "sExperience integer"
                                 + ");";
                     String transactionSql = "create table if not exists transaction ("
                                 + "tid integer, "
                                 + "pid integer, "
                                 + "sid integer, "
-                                + "tDate datetime"
+                                + "tDate date"
                                 + ");";
                     try {
-                        System.out.print("Processing...");
+                        System.out.print("Processing...\n");
                         Connection mysql = connectToMySQL();
                         Statement sql = mysql.createStatement();
                         sql.executeUpdate(categorySql);
@@ -132,7 +134,7 @@ public class Main {
                     
                     String EnableFK = "set foreign_key_checks = 1";
                     try {
-                        System.out.print("Processing...");
+                        System.out.print("Processing...\n");
                         Connection mysql = connectToMySQL();
                         Statement sql = mysql.createStatement();
                         sql.executeUpdate(disableFK);
@@ -158,7 +160,7 @@ public class Main {
                     // updated
                     String path = input.next();
                     input.nextLine();
-                    System.out.print("Processing...");
+                    System.out.print("Processing...\n");
 
                     try {
                             File file = new File(path + "/category.txt");
@@ -244,7 +246,7 @@ public class Main {
                         PreparedStatement partPS = mysql.prepareStatement(partInsert);
                         PreparedStatement salespersonPS = mysql.prepareStatement(salespersonInsert);
                         PreparedStatement transactionPS = mysql.prepareStatement(transactionInsert);
-                        for(int i = 0; categoryInfo[i] != null; i++) {
+                        for(int i = 0; categoryInfo[i][0] != null; i++) {
                             categoryPS.setInt(1, Integer.parseInt(categoryInfo[i][0]));
                             categoryPS.setString(2, categoryInfo[i][1]);
                             categoryPS.executeUpdate();
@@ -269,20 +271,25 @@ public class Main {
                         for(int i = 0; salespersonInfo[i][0] != null; i++) {
                             salespersonPS.setInt(1, Integer.parseInt(salespersonInfo[i][0]));
                             salespersonPS.setString(2, salespersonInfo[i][1]);
-                            salespersonPS.setString(3, partInfo[i][2]);
-                            salespersonPS.setInt(4,Integer.parseInt(partInfo[i][3]));
-                            salespersonPS.setInt(5,Integer.parseInt(partInfo[i][4]));
+                            salespersonPS.setString(3, salespersonInfo[i][2]);
+                            salespersonPS.setInt(4,Integer.parseInt(salespersonInfo[i][3]));
+                            //salespersonPS.setString(4, salespersonInfo[i][3]);
+                            salespersonPS.setInt(5,Integer.parseInt(salespersonInfo[i][4]));
                             salespersonPS.executeUpdate();
                         }
                         for(int i = 0; transactionInfo[i][0] != null; i++) {
-                            SimpleDateFormat formatter = new SimpleDateFormat("DD/MM/YYYY");
+                            SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
                             java.util.Date date = formatter.parse(transactionInfo[i][3]);
-                            java.sql.Date sqlDate = new java.sql.Date(date.getTime());
+                            //System.out.println(date);
+                            Calendar cal = Calendar.getInstance();
+                            cal.setTime(date);
+                            //System.out.println(date);
+                            java.sql.Date sqlDate = new java.sql.Date(cal.getTimeInMillis());   
                             transactionPS.setInt(1, Integer.parseInt(transactionInfo[i][0]));
-                            transactionPS.setInt(2, Integer.parseInt(salespersonInfo[i][1]));
+                            transactionPS.setInt(2, Integer.parseInt(transactionInfo[i][1]));
                             transactionPS.setInt(3, Integer.parseInt(transactionInfo[i][2]));
-                            salespersonPS.setDate(4,sqlDate);
-                            salespersonPS.executeUpdate();
+                            transactionPS.setDate(4,sqlDate);
+                            transactionPS.executeUpdate();
                         }
                     } catch(Exception e) {
                         System.out.println(e);
