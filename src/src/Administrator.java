@@ -1,73 +1,17 @@
+package src;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
-import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.SimpleDateFormat;
-import java.util.Scanner;
-import javax.naming.ldap.StartTlsResponse;
-
 import java.util.Calendar;
-import java.util.Date; 
-import java.text.SimpleDateFormat;
-import java.text.ParseException;
 
-public class Main {
-    public static Scanner input = new Scanner(System.in);
-    public static String dbAddress = "jdbc:mysql://projgw.cse.cuhk.edu.hk:2633/db40?autoReconnect=true&useSSL=false";
-    public static String dbUsername = "Group40";
-    public static String dbPassword = "CSCI3170";
-
-    public static Connection connectToMySQL(){
-        Connection con = null;
-        try{
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            con = DriverManager.getConnection(dbAddress, dbUsername, dbPassword);
-        } catch (ClassNotFoundException e){
-            System.out.println("[Error]: Java MySQL DB Driver not found!!");
-            System.exit(0);
-        } catch (SQLException e){
-            System.out.println(e);
-        }
-        return con;
-    }
-    public static void Menu() {
-        //Scanner input = new Scanner(System.in);
-        do{
-            System.out.println("-----Main menu-----");
-            System.out.println("What kind of operation would like to perform?");
-            System.out.println("1. Operations for administrator");
-            System.out.println("2. Operations for salesperson");
-            System.out.println("3. Operations for manager");
-            System.out.println("4. Exit this program");
-            System.out.print("Enter your choice: ");
-            
-            int option = input.nextInt();
-            
-            switch(option) {
-                case 1:
-                    Administrator();
-                    break;
-                case 2:
-                    Salesperson();
-                    break;
-                case 3:
-                    Manager();
-                    break;
-                case 4:
-                    return;
-                default:
-                    System.out.println("[ERROR] Invalid Input");
-            }
-        } while(true);
-    }
-
-    public static void Administrator(){
+public class Administrator{
+        public static void Administrator_operation(){
         do{
             System.out.println("What kinds of operation would like to perform?");
             System.out.println("1. Create all tables");
@@ -77,7 +21,7 @@ public class Main {
             System.out.println("5. Return to the main menu");
             System.out.println("Enter your choice: ");
 
-            int option=input.nextInt();
+            int option=Main.input.nextInt();
             switch (option){
                 case 1:
                     String categorySql = "create table if not exists category ("
@@ -114,7 +58,7 @@ public class Main {
                                 + ");";
                     try {
                         System.out.print("Processing...\n");
-                        Connection mysql = connectToMySQL();
+                        Connection mysql = Main.connectToMySQL();
                         Statement sql = mysql.createStatement();
                         sql.executeUpdate(categorySql);
                         sql.executeUpdate(manufacturerSql);
@@ -137,7 +81,7 @@ public class Main {
                     String EnableFK = "set foreign_key_checks = 1";
                     try {
                         System.out.print("Processing...\n");
-                        Connection mysql = connectToMySQL();
+                        Connection mysql = Main.connectToMySQL();
                         Statement sql = mysql.createStatement();
                         sql.executeUpdate(disableFK);
                         sql.executeUpdate(dropCategoty);
@@ -160,8 +104,8 @@ public class Main {
                     
                     System.out.println("Please enter the folder path");
                     // updated
-                    String path = input.next();
-                    input.nextLine();
+                    String path = Main.input.next();
+                    Main.input.nextLine();
                     System.out.print("Processing...\n");
 
                     try {
@@ -241,7 +185,7 @@ public class Main {
                     String transactionInsert = "insert into transaction values(?, ?, ?, ?)";
                     
                     try{
-                        Connection mysql = connectToMySQL();
+                        Connection mysql = Main.connectToMySQL();
                         Statement sql = mysql.createStatement();
                         PreparedStatement categoryPS = mysql.prepareStatement(categoryInsert);
                         PreparedStatement manufacturerPS = mysql.prepareStatement(manufacturerInsert);
@@ -299,9 +243,9 @@ public class Main {
                     break;
                 case 4:
                     System.out.println("Which table would you like to show: ");
-                    String opt1 = input.nextLine();//eliminate \n
+                    String opt1 = Main.input.nextLine();//eliminate \n
                     //System.out.print("opt1:"+opt1);
-                    String opt = input.nextLine();
+                    String opt = Main.input.nextLine();
                     //System.out.print("opt:"+opt);
                     String categoryDisplay = "select * from category;";
                     String manufacturerDisplay = "select * from manufacturer;";
@@ -309,7 +253,7 @@ public class Main {
                     String salespersonDisplay = "select * from salesperson;";
                     String transactionDisplay = "select * from transaction;";
                     try {
-                        Connection mysql = connectToMySQL();
+                        Connection mysql = Main.connectToMySQL();
                         Statement sql = mysql.createStatement();
                         if(opt.equals("category")){
                             ResultSet categoryRS = sql.executeQuery(categoryDisplay);
@@ -439,19 +383,5 @@ public class Main {
                     System.out.println("[ERROR] Invalid Input");
             }
         } while(true);
-    }
-
-    public static void Salesperson(){
-
-    }
-
-    public static void Manager(){
-
-    }
-
-
-    public static void main(String[] args) {
-         Menu();
-         return;
     }
 }
