@@ -4,7 +4,6 @@
    java -cp ./lib/mysql-jdbc.jar ./src/Main.java
 
 
-​    
 
 #### • Importing required packages for JDBC API
 
