@@ -4,6 +4,8 @@ import java.io.FileReader;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.SimpleDateFormat;
@@ -67,7 +69,7 @@ public class Main {
 
     public static void Administrator(){
         do{
-            System.out.println("-----What kinds of operation would like to perform?");
+            System.out.println("What kinds of operation would like to perform?");
             System.out.println("1. Create all tables");
             System.out.println("2. Delete all tables");
             System.out.println("3. Load from datafile");
@@ -296,7 +298,141 @@ public class Main {
                     }
                     break;
                 case 4:
-
+                    System.out.println("Which table would you like to show: ");
+                    String opt1 = input.nextLine();//eliminate \n
+                    //System.out.print("opt1:"+opt1);
+                    String opt = input.nextLine();
+                    //System.out.print("opt:"+opt);
+                    String categoryDisplay = "select * from category;";
+                    String manufacturerDisplay = "select * from manufacturer;";
+                    String partDisplay = "select * from part;";
+                    String salespersonDisplay = "select * from salesperson;";
+                    String transactionDisplay = "select * from transaction;";
+                    try {
+                        Connection mysql = connectToMySQL();
+                        Statement sql = mysql.createStatement();
+                        if(opt.equals("category")){
+                            ResultSet categoryRS = sql.executeQuery(categoryDisplay);
+                            // Get the metadata of the ResultSet
+                            ResultSetMetaData rsmd = categoryRS.getMetaData();
+                            int columnsNumber = rsmd.getColumnCount();
+                            System.out.print("| ");
+                            for (int i = 1; i <= columnsNumber; i++) {
+                                if (i > 1) System.out.print(" | ");
+                                System.out.print(rsmd.getColumnName(i));
+                            }
+                            System.out.println(" |");
+                            // Iterate through the ResultSet, row by row
+                            while (categoryRS.next()) {
+                                // Iterate through each column of the row
+                                System.out.print("| ");
+                                for (int i = 1; i <= columnsNumber; i++) {
+                                    if (i > 1) System.out.print(" | ");
+                                    String columnValue = categoryRS.getString(i);
+                                    System.out.print(columnValue);
+                                }
+                                System.out.println(" |");
+                            }
+                        }
+                        else if(opt.equals("manufacturer")){
+                            ResultSet manufacturerRS = sql.executeQuery(manufacturerDisplay);
+                            // Get the metadata of the ResultSet
+                            ResultSetMetaData rsmd = manufacturerRS.getMetaData();
+                            int columnsNumber = rsmd.getColumnCount();
+                            System.out.print("| ");
+                            for (int i = 1; i <= columnsNumber; i++) {
+                                if (i > 1) System.out.print(" | ");
+                                System.out.print(rsmd.getColumnName(i));
+                            }
+                            System.out.println(" |");
+                            // Iterate through the ResultSet, row by row
+                            while (manufacturerRS.next()) {
+                                // Iterate through each column of the row
+                                System.out.print("| ");
+                                for (int i = 1; i <= columnsNumber; i++) {
+                                    if (i > 1) System.out.print(" | ");
+                                    String columnValue = manufacturerRS.getString(i);
+                                    System.out.print(columnValue);
+                                }
+                                System.out.println(" |");
+                            }
+                        }
+                        else if(opt.equals("part")){
+                            ResultSet partRS = sql.executeQuery(partDisplay);
+                            // Get the metadata of the ResultSet
+                            ResultSetMetaData rsmd = partRS.getMetaData();
+                            int columnsNumber = rsmd.getColumnCount();
+                            System.out.print("| ");
+                            for (int i = 1; i <= columnsNumber; i++) {
+                                if (i > 1) System.out.print(" | ");
+                                System.out.print(rsmd.getColumnName(i));
+                            }
+                            System.out.println(" |");
+                            // Iterate through the ResultSet, row by row
+                            while (partRS.next()) {
+                                // Iterate through each column of the row
+                                System.out.print("| ");
+                                for (int i = 1; i <= columnsNumber; i++) {
+                                    if (i > 1) System.out.print(" | ");
+                                    String columnValue = partRS.getString(i);
+                                    System.out.print(columnValue);
+                                }
+                                System.out.println(" |");
+                            }
+                        }
+                        else if(opt.equals("salesperson")){
+                            ResultSet salespersonRS = sql.executeQuery(salespersonDisplay);
+                            // Get the metadata of the ResultSet
+                            ResultSetMetaData rsmd = salespersonRS.getMetaData();
+                            int columnsNumber = rsmd.getColumnCount();
+                            System.out.print("| ");
+                            for (int i = 1; i <= columnsNumber; i++) {
+                                if (i > 1) System.out.print(" | ");
+                                System.out.print(rsmd.getColumnName(i));
+                            }
+                            System.out.println(" |");
+                            // Iterate through the ResultSet, row by row
+                            while (salespersonRS.next()) {
+                                // Iterate through each column of the row
+                                System.out.print("| ");
+                                for (int i = 1; i <= columnsNumber; i++) {
+                                    if (i > 1) System.out.print(" | ");
+                                    String columnValue = salespersonRS.getString(i);
+                                    System.out.print(columnValue);
+                                }
+                                System.out.println(" |");
+                            }
+                        }
+                        else if(opt.equals("transaction")){
+                            ResultSet transactionRS = sql.executeQuery(transactionDisplay);
+                            // Get the metadata of the ResultSet
+                            ResultSetMetaData rsmd = transactionRS.getMetaData();
+                            int columnsNumber = rsmd.getColumnCount();
+                            System.out.print("| ");
+                            for (int i = 1; i <= columnsNumber; i++) {
+                                if (i > 1) System.out.print(" | ");
+                                System.out.print(rsmd.getColumnName(i));
+                            }
+                            System.out.println(" |");
+                            // Iterate through the ResultSet, row by row
+                            while (transactionRS.next()) {
+                                // Iterate through each column of the row
+                                System.out.print("| ");
+                                for (int i = 1; i <= columnsNumber; i++) {
+                                    if (i > 1) System.out.print(" | ");
+                                    String columnValue = transactionRS.getString(i);
+                                    System.out.print(columnValue);
+                                }
+                                System.out.println(" |");
+                            }
+                        }
+                        else{
+                            System.out.println("Invalid Input");
+                        }
+                    } catch(Exception e) {
+                        System.out.println(e);
+                    }
+                    break;
                 case 5:
                     return;
                 default:
