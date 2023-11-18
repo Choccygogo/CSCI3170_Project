@@ -1,20 +1,8 @@
-package src;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
-import java.sql.Statement;
-import java.text.SimpleDateFormat;
 import java.util.Scanner;
-import java.util.Calendar;
-import src.Administrator;
-import src.Manager;
-import src.Salesperson;
 
 public class Main {
     public static Scanner input = new Scanner(System.in);
@@ -64,16 +52,6 @@ public class Main {
                     System.out.println("[ERROR] Invalid Input");
             }
         } while(true);
-    }
-
-
-
-    public static void Salesperson(){
-
-    }
-
-    public static void Manager(){
-
     }
 
 

@@ -2,6 +2,8 @@
 #### • Use mySQL_JDBC.jar that we provide and Compile and run your Java program:
 
    java -cp ./lib/mysql-jdbc.jar ./src/src/Main.java
+   or
+   /usr/bin/env /Library/Java/JavaVirtualMachines/temurin-17.jdk/Contents/Home/bin/java @/var/folders/4x/cy5h98m146b541k_3jtkpgbw0000gn/T/cp_eudqogsiqh6qi3a1xsl6c0rcq.argfile Main
 
 
 
