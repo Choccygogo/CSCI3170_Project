@@ -9,8 +9,10 @@ import java.sql.ResultSetMetaData;
 import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Scanner;
 
 public class Administrator{
+        public static Scanner input = new Scanner(System.in);
         public static void Administrator_operation(){
         do{
             System.out.println("What kinds of operation would like to perform?");
@@ -21,7 +23,7 @@ public class Administrator{
             System.out.println("5. Return to the main menu");
             System.out.println("Enter your choice: ");
 
-            int option=Main.input.nextInt();
+            int option = input.nextInt();
             switch (option){
                 case 1:
                     String categorySql = "create table if not exists category ("
@@ -104,8 +106,8 @@ public class Administrator{
                     
                     System.out.println("Please enter the folder path");
                     // updated
-                    String path = Main.input.next();
-                    Main.input.nextLine();
+                    String path = input.next();
+                    input.nextLine();
                     System.out.print("Processing...\n");
 
                     try {
@@ -243,9 +245,9 @@ public class Administrator{
                     break;
                 case 4:
                     System.out.println("Which table would you like to show: ");
-                    String opt1 = Main.input.nextLine();//eliminate \n
+                    String opt1 = input.nextLine();//eliminate \n
                     //System.out.print("opt1:"+opt1);
-                    String opt = Main.input.nextLine();
+                    String opt = input.nextLine();
                     //System.out.print("opt:"+opt);
                     String categoryDisplay = "select * from category;";
                     String manufacturerDisplay = "select * from manufacturer;";
@@ -371,7 +373,7 @@ public class Administrator{
                             }
                         }
                         else{
-                            System.out.println("Invalid Input");
+                            System.out.println("[ERROR] Invalid Input");
                         }
                     } catch(Exception e) {
                         System.out.println(e);

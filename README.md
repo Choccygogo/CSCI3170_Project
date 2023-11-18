@@ -1,7 +1,7 @@
 # CSCI3170_Project
 #### • Use mySQL_JDBC.jar that we provide and Compile and run your Java program:
 
-   java -cp ./lib/mysql-jdbc.jar ./src/Main.java
+   java -cp ./lib/mysql-jdbc.jar ./src/src/Main.java
 
 
 

@@ -12,6 +12,9 @@ import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.Scanner;
 import java.util.Calendar;
+import src.Administrator;
+import src.Manager;
+import src.Salesperson;
 
 public class Main {
     public static Scanner input = new Scanner(System.in);
@@ -50,10 +53,10 @@ public class Main {
                     Administrator.Administrator_operation();
                     break;
                 case 2:
-                    Salesperson();
+                    Salesperson.Salesperson_operation();
                     break;
                 case 3:
-                    Manager();
+                    Manager.Manager_operation();
                     break;
                 case 4:
                     return;
