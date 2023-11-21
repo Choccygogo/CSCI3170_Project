@@ -27,46 +27,57 @@ public class Administrator{
             switch (option){
                 case 1:
                     String categorySql = "create table if not exists category ("
-                                + "cid integer, "
-                                + "cName char(20)"
+                                + "cid integer NOT NULL, "
+                                + "cName char(20), "
+                                + "CONSTRAINT categoryKey PRIMARY KEY (cid)"
                                 + ");";
                     String manufacturerSql = "create table if not exists manufacturer ("
-                                + "mid integer, "
+                                + "mid integer NOT NULL, "
                                 + "mName char(20), "
                                 + "mAddress char(50), "
-                                + "mPhoneNumber integer"
+                                + "mPhoneNumber integer, "
+                                + "CONSTRAINT manufacturerKey PRIMARY KEY (mid)"
                                 + ");";
                     String partSql = "create table if not exists part ("
-                                + "pid integer, "
+                                + "pid integer NOT NULL, "
                                 + "pName char(20), "
                                 + "pPrice integer, "
-                                + "mid integer, "
-                                + "cid integer, "
+                                + "mid integer NOT NULL, "
+                                + "cid integer NOT NULL, "
                                 + "pWarrantyPeriod integer, "
-                                + "pAvailableQuantity integer"
+                                + "pAvailableQuantity integer, "
+                                + "CONSTRAINT partKey PRIMARY KEY (pid), "
+                                + "FOREIGN KEY (mid) REFERENCES manufacturer(mid), "
+                                + "FOREIGN KEY (cid) REFERENCES category(cid)"
                                 + ");";
                     String salespersonSql = "create table if not exists salesperson ("
-                                + "sid integer, "
+                                + "sid integer NOT NULL, "
                                 + "sName char(20), "
                                 + "sAddress char(50), "
                                 + "sPhoneNumber integer, "
-                                + "sExperience integer"
+                                + "sExperience integer, "
+                                + "CONSTRAINT salespersonKey PRIMARY KEY (sid)"
                                 + ");";
                     String transactionSql = "create table if not exists transaction ("
-                                + "tid integer, "
-                                + "pid integer, "
-                                + "sid integer, "
-                                + "tDate date"
+                                + "tid integer NOT NULL, "
+                                + "pid integer NOT NULL, "
+                                + "sid integer NOT NULL, "
+                                + "tDate date, "
+                                + "CONSTRAINT transactionKey PRIMARY KEY (tid), "
+                                + "FOREIGN KEY (pid) REFERENCES part(pid), "
+                                + "FoREIGN KEY (sid) REFERENCES salesperson(sid)"
                                 + ");";
                     try {
                         System.out.print("Processing...\n");
                         Connection mysql = Main.connectToMySQL();
                         Statement sql = mysql.createStatement();
+                        sql.executeUpdate("set foreign_key_checks = 0;");
                         sql.executeUpdate(categorySql);
                         sql.executeUpdate(manufacturerSql);
                         sql.executeUpdate(partSql);
                         sql.executeUpdate(salespersonSql);
                         sql.executeUpdate(transactionSql);
+                        sql.executeUpdate("set foreign_key_checks = 1;");
                         System.out.println("Done! Tables are created");
                     } catch(Exception e) {
                         System.out.println(e);
@@ -376,7 +387,7 @@ public class Administrator{
                             System.out.println("[ERROR] Invalid Input");
                         }
                     } catch(Exception e) {
-                        System.out.println(e);
+                        System.out.println(e.toString());
                     }
                     break;
                 case 5:
