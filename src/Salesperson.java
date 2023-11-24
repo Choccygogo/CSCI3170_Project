@@ -30,7 +30,7 @@ public class Salesperson {
                     case 3:
                         return;
                     default:
-                        System.out.println("Undefined operation.");
+                        System.out.println("[ERROR] Invalid Input");
                 }
             }catch(Exception e){
                 System.out.println(e);
@@ -95,7 +95,7 @@ public class Salesperson {
             }
         }
         else{
-            System.out.println("Undefined operation.");
+            System.out.println("[ERROR] Invalid Input");
         }
     }
 

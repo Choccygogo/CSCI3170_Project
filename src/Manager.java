@@ -21,7 +21,7 @@ public class Manager {
             switch (option){
                 case 1:
                     String orderbyAscending = "SELECT sid, sName, sPhoneNumber, sExperience FROM salesperson ORDER BY sExperience ASC;";
-                    String orderbyDescending = "SELECT * FROM salesperson ORDER BY sExperience DESC;";
+                    String orderbyDescending = "SELECT sid, sName, sPhoneNumber, sExperience FROM salesperson ORDER BY sExperience DESC;";
                     System.out.println("Choose ordering:");
                     System.out.println("1. By ascending order");
                     System.out.println("2. By descending order");
@@ -117,7 +117,11 @@ public class Manager {
                         System.out.println(e);
                     }
                 case 3:
+                    listManufacturersByTotalSales();
                 case 4:
+                    System.out.println("Type in the number of parts: ");
+                    int N = input.nextInt();
+                    listTopNPopularParts(N);
                 case 5:
                     return;
                 default:
@@ -125,4 +129,69 @@ public class Manager {
             }
         } while(true);
     }
+    private static void listManufacturersByTotalSales() { 
+
+        String sql = "SELECT m.manufacturerID, m.manufacturerName, SUM(t.salesValue) as totalSalesValue " + 
+                     "FROM manufacturer m " + 
+                     "JOIN part p ON m.manufacturerID = p.manufacturerID " + 
+                     "JOIN transaction t ON p.partID = t.partID " + 
+                     "GROUP BY m.manufacturerID, m.manufacturerName " + 
+                     "ORDER BY totalSalesValue DESC;";
+    
+        try {
+    
+            Connection mysql = Main.connectToMySQL();
+    
+            Statement stmt = mysql.createStatement();
+    
+            ResultSet rs = stmt.executeQuery(sql);
+    
+            System.out.println("| Manufacturer ID | Manufacturer Name | Total Sales Value |");
+    
+            while (rs.next()) {
+    
+                System.out.println("| " + rs.getString("manufacturerID") + " | " + rs.getString("manufacturerName") + " | " + rs.getString("totalSalesValue") + " |");
+    
+            }
+    
+        } catch (Exception e) {
+    
+            System.out.println(e);
+    
+        }
+    
+    }
+    
+    private static void listTopNPopularParts(int N) {
+        String sql = "SELECT p.partID, p.partName, COUNT(t.transactionID) as totalTransaction " + 
+                     "FROM part p " + 
+                     "JOIN transaction t ON p.partID = t.partID " +
+                     "GROUP BY p.partID, p.partName " + 
+                     "ORDER BY totalTransaction DESC " + 
+                     "LIMIT " + N + ";"; 
+    
+        try {
+    
+            Connection mysql = Main.connectToMySQL();
+    
+            Statement stmt = mysql.createStatement();
+    
+            ResultSet rs = stmt.executeQuery(sql);
+    
+            System.out.println("| Part ID | Part Name | No. of Transaction |");
+    
+            while (rs.next()) {
+    
+                System.out.println("| " + rs.getString("partID") + " | " + rs.getString("partName") + " | " + rs.getString("totalTransaction") + " |");
+    
+            }
+    
+        } catch (Exception e) { 
+    
+            System.out.println(e);
+    
+        }
+    
+    }
+    
 }
