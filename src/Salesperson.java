@@ -18,7 +18,7 @@ public class Salesperson {
                 System.out.println("1. Search for parts");
                 System.out.println("2. Sell a part");
                 System.out.println("3. Return to the main menu");
-                System.out.print("Enter Your Choice:");
+                System.out.print("Enter Your Choice: ");
                 short choice = input.nextShort();
                 switch(choice){
                     case 1:
@@ -49,7 +49,7 @@ public class Salesperson {
         System.out.println("Choose ordering:");
         System.out.println("1. By price, ascending order");
         System.out.println("2. By price, descending order");
-        System.out.println("Choose the ordering: ");
+        System.out.println("Choose the search criterion: ");
         short choice1 = input.nextShort();
         if((choice == 1 || choice == 2) && (choice1 == 1 || choice1 == 2) ){
             try{
