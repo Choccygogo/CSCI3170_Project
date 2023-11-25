@@ -122,7 +122,7 @@ public class Administrator{
                     System.out.print("Processing...\n");
 
                     try {
-                            File file = new File(path + "/category.txt");
+                            File file = new File( "./" + path + "/category.txt");
                             BufferedReader br = new BufferedReader(new FileReader(file)); 
                             String st;
                             int count = 0;
