@@ -9,13 +9,14 @@ public class Manager {
     public static Scanner input = new Scanner(System.in);
         public static void Manager_operation(){
         do{
+            System.out.println("\n-----Operations for manager menu-----");
             System.out.println("What kinds of operation would like to perform?");
             System.out.println("1. List all salespersons");
             System.out.println("2. Count the no. of sales record of each salesperson under a specific range on years of experience");
             System.out.println("3. Show the total sales value of each manufacturer");
             System.out.println("4. Show the N most popular part");
             System.out.println("5. Return to the main menu");
-            System.out.println("Enter your choice: ");
+            System.out.print("Enter your choice: ");
 
             int option = input.nextInt();
             switch (option){
@@ -24,14 +25,17 @@ public class Manager {
                     break;
                 case 2:
                     countRecordswithRangeofExperience();
+                    System.out.println("End of Query");
                     break;
                 case 3:
                     listManufacturersByTotalSales();
+                    System.out.println("End of Query");
                     break;
                 case 4:
-                    System.out.println("Type in the number of parts: ");
+                    System.out.print("Type in the number of parts: ");
                     int N = input.nextInt();
                     listTopNPopularParts(N);
+                    System.out.println("End of Query");
                     break;
                 case 5:
                     return;
@@ -141,11 +145,11 @@ public class Manager {
     }
     private static void listManufacturersByTotalSales() { 
 
-        String sql = "SELECT m.manufacturerID, m.manufacturerName, SUM(t.salesValue) as totalSalesValue " + 
+        String sql = "SELECT m.mid, m.mname, SUM(p.pPrice) as totalSalesValue " + 
                      "FROM manufacturer m " + 
-                     "JOIN part p ON m.manufacturerID = p.manufacturerID " + 
-                     "JOIN transaction t ON p.partID = t.partID " + 
-                     "GROUP BY m.manufacturerID, m.manufacturerName " + 
+                     "JOIN part p ON m.mid = p.mid " + 
+                     "JOIN transaction t ON p.pid = t.pid " + 
+                     "GROUP BY m.mid, m.mname " + 
                      "ORDER BY totalSalesValue DESC;";
     
         try {
@@ -160,7 +164,7 @@ public class Manager {
     
             while (rs.next()) {
     
-                System.out.println("| " + rs.getString("manufacturerID") + " | " + rs.getString("manufacturerName") + " | " + rs.getString("totalSalesValue") + " |");
+                System.out.println("| " + rs.getString("mid") + " | " + rs.getString("mname") + " | " + rs.getString("totalSalesValue") + " |");
     
             }
     
@@ -173,10 +177,10 @@ public class Manager {
     }
     
     private static void listTopNPopularParts(int N) {
-        String sql = "SELECT p.partID, p.partName, COUNT(t.transactionID) as totalTransaction " + 
+        String sql = "SELECT p.pid, p.pname, COUNT(t.tid) as totalTransaction " + 
                      "FROM part p " + 
-                     "JOIN transaction t ON p.partID = t.partID " +
-                     "GROUP BY p.partID, p.partName " + 
+                     "JOIN transaction t ON p.pid = t.pid " +
+                     "GROUP BY p.pid, p.pname " + 
                      "ORDER BY totalTransaction DESC " + 
                      "LIMIT " + N + ";"; 
     
@@ -192,7 +196,7 @@ public class Manager {
     
             while (rs.next()) {
     
-                System.out.println("| " + rs.getString("partID") + " | " + rs.getString("partName") + " | " + rs.getString("totalTransaction") + " |");
+                System.out.println("| " + rs.getString("pid") + " | " + rs.getString("pname") + " | " + rs.getString("totalTransaction") + " |");
     
             }
     

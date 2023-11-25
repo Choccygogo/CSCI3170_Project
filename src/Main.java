@@ -24,9 +24,11 @@ public class Main {
         return con;
     }
     public static void Menu() {
+        
+        System.out.println("Welcome to sales system!");
         //Scanner input = new Scanner(System.in);
         do{
-            System.out.println("-----Main menu-----");
+            System.out.println("\n-----Main menu-----");
             System.out.println("What kind of operation would like to perform?");
             System.out.println("1. Operations for administrator");
             System.out.println("2. Operations for salesperson");
@@ -35,7 +37,7 @@ public class Main {
             System.out.print("Enter your choice: ");
             
             int option = input.nextInt();
-            
+
             switch(option) {
                 case 1:
                     Administrator.Administrator_operation();
