@@ -8,7 +8,7 @@ import java.sql.ResultSetMetaData;
 import java.sql.Date;
 
 public class Salesperson {
-    public static Scanner input = new Scanner(System.in);
+    private static Scanner input = new Scanner(System.in);
     private static int availableTID = 0;
     private static boolean available = false;
     public static void Salesperson_operation(){
@@ -74,13 +74,17 @@ public class Salesperson {
                 ResultSet rs = pstmt.executeQuery();
                 ResultSetMetaData rsmd = rs.getMetaData();
                 int columnsNumber = rsmd.getColumnCount();
-                System.out.print("| ");
-                for (int i = 1; i <= columnsNumber; i++) {
-                    System.out.print(rsmd.getColumnName(i));
-                    System.out.print(" | ");
-                }
-                System.out.println();
+                boolean existPart = false;
                 while (rs.next()) {
+                    if(!existPart){
+                        System.out.print("| ");
+                        for (int i = 1; i <= columnsNumber; i++) {
+                            System.out.print(rsmd.getColumnName(i));
+                            System.out.print(" | ");
+                        }
+                        System.out.println();
+                        existPart = true;
+                    }
                     System.out.print("| ");
                     for (int i = 1; i <= columnsNumber; i++) {
                         String columnValue = rs.getString(i);
@@ -88,6 +92,9 @@ public class Salesperson {
                         System.out.print(" | ");
                     }
                     System.out.println();
+                }
+                if(!existPart){
+                    System.out.println("There is no part name which contains " + keyword);
                 }
             }
             catch(Exception e){
