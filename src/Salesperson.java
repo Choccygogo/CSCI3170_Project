@@ -8,7 +8,7 @@ import java.sql.ResultSetMetaData;
 import java.sql.Date;
 
 public class Salesperson {
-    public static Scanner input = new Scanner(System.in);
+    private static Scanner input = new Scanner(System.in);
     private static int availableTID = 0;
     private static boolean available = false;
     public static void Salesperson_operation(){
@@ -44,12 +44,13 @@ public class Salesperson {
         System.out.println("2. Manufacturer Name");
         System.out.print("Choose the search criterion: ");
         short choice = input.nextShort();
+        input.nextLine();
         System.out.print("Type in the Search Keyword: ");
-        String keyword = input.next();
+        String keyword = input.nextLine();
         System.out.println("Choose ordering:");
         System.out.println("1. By price, ascending order");
         System.out.println("2. By price, descending order");
-        System.out.println("Choose the search criterion: ");
+        System.out.print("Choose the search criterion: ");
         short choice1 = input.nextShort();
         if((choice == 1 || choice == 2) && (choice1 == 1 || choice1 == 2) ){
             try{
@@ -89,6 +90,7 @@ public class Salesperson {
                     }
                     System.out.println();
                 }
+                System.out.println("End of query.");
             }
             catch(Exception e){
                 System.out.println(e);
