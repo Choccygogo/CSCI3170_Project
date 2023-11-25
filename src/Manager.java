@@ -20,114 +20,124 @@ public class Manager {
             int option = input.nextInt();
             switch (option){
                 case 1:
-                    String orderbyAscending = "SELECT sid, sName, sPhoneNumber, sExperience FROM salesperson ORDER BY sExperience ASC;";
-                    String orderbyDescending = "SELECT sid, sName, sPhoneNumber, sExperience FROM salesperson ORDER BY sExperience DESC;";
-                    System.out.println("Choose ordering:");
-                    System.out.println("1. By ascending order");
-                    System.out.println("2. By descending order");
-                    System.out.print("Choose the list ordering: ");
-                    int opt = input.nextInt();
-                    try{
-                        Connection mysql = Main.connectToMySQL();
-                        Statement sql = mysql.createStatement();
-                        //switch(opt)
-                        if(opt == 1){
-                            ResultSet ascendingRS = sql.executeQuery(orderbyAscending);
-                            // Get the metadata of the ResultSet
-                            ResultSetMetaData rsmd = ascendingRS.getMetaData();
-                            int columnsNumber = rsmd.getColumnCount();
-                            System.out.println("| ID | Name | Mobile Phone | Years of Experience |");
-                            // Iterate through the ResultSet, row by row
-                            while (ascendingRS.next()) {
-                                // Iterate through each column of the row
-                                System.out.print("| ");
-                                for (int i = 1; i <= columnsNumber; i++) {
-                                    if (i > 1) System.out.print(" | ");
-                                    String columnValue = ascendingRS.getString(i);
-                                    System.out.print(columnValue);
-                                }
-                                System.out.println(" |");
-                            }
-                        }
-                        else if(opt == 2){
-                            ResultSet descendingRS = sql.executeQuery(orderbyDescending);
-                            // Get the metadata of the ResultSet
-                            ResultSetMetaData rsmd = descendingRS.getMetaData();
-                            int columnsNumber = rsmd.getColumnCount();
-                            System.out.print("| ");
-                            for (int i = 1; i <= columnsNumber; i++) {
-                                if (i > 1) System.out.print(" | ");
-                                System.out.print(rsmd.getColumnName(i));
-                            }
-                            System.out.println(" |");
-                            // Iterate through the ResultSet, row by row
-                            while (descendingRS.next()) {
-                                // Iterate through each column of the row
-                                System.out.print("| ");
-                                for (int i = 1; i <= columnsNumber; i++) {
-                                    if (i > 1) System.out.print(" | ");
-                                    String columnValue = descendingRS.getString(i);
-                                    System.out.print(columnValue);
-                                }
-                                System.out.println(" |");
-                            }
-                        }
-                        else {
-                            System.out.println("[ERROR] Invalid Input");
-                        }
-                    } catch(Exception e){
-                        System.out.println(e);
-                    }
+                    listAllSalesperson();
+                    break;
                 case 2:
-                    String countwithRange = "SELECT s.sid, s.sName, s.sExperience, COUNT(t.sid) as transaction_count FROM salesperson s LEFT JOIN transaction t ON s.sid = t.sid WHERE s.sExperience BETWEEN ? AND ? GROUP BY s.sid ORDER BY s.sid DESC;";
-                    System.out.println("Type in the lower bound for years of experience: ");
-                    int opt1 = input.nextInt();
-                    System.out.println("Type in the uppper bound for years of experience: ");
-                    int opt2 = input.nextInt();
-                    try{
-                        Connection mysql = Main.connectToMySQL();
-                        Statement sql = mysql.createStatement();
-                        PreparedStatement countPS = mysql.prepareStatement(countwithRange);
-                        countPS.setInt(1,opt1);
-                        countPS.setInt(2,opt2);
-                        if(opt1<=opt2){
-                            countPS.setInt(1, opt1);
-                            countPS.setInt(2, opt2);
-                            ResultSet result=countPS.executeQuery();
-                            // Get the metadata of the ResultSet
-                            ResultSetMetaData rsmd = countPS.getMetaData();
-                            int columnsNumber = rsmd.getColumnCount();
-                            System.out.println("| ID | Name | Years of Experience | Number of Transaction");
-                            // Iterate through the ResultSet, row by row
-                            while (result.next()) {
-                                // Iterate through each column of the row
-                                System.out.print("| ");
-                                for (int i = 1; i <= columnsNumber; i++) {
-                                    if (i > 1) System.out.print(" | ");
-                                    String columnValue = result.getString(i);
-                                    System.out.print(columnValue);
-                                }
-                                System.out.println(" |");
-                            }
-                        }
-                        else {
-                            System.out.println("[ERROR] Invalid Input");
-                        }
-                    } catch(Exception e){
-                        System.out.println(e);
-                    }
+                    countRecordswithRangeofExperience();
+                    break;
                 case 3:
                     listManufacturersByTotalSales();
+                    break;
                 case 4:
                     System.out.println("Type in the number of parts: ");
                     int N = input.nextInt();
                     listTopNPopularParts(N);
+                    break;
                 case 5:
                     return;
                 default:
                     System.out.println("[ERROR] Invalid Input");
             }
         } while(true);
+    }
+    private static void listAllSalesperson(){
+        String orderbyAscending = "SELECT sid, sName, sPhoneNumber, sExperience FROM salesperson ORDER BY sExperience ASC;";
+        String orderbyDescending = "SELECT sid, sName, sPhoneNumber, sExperience FROM salesperson ORDER BY sExperience DESC;";
+        System.out.println("Choose ordering:");
+        System.out.println("1. By ascending order");
+        System.out.println("2. By descending order");
+        System.out.print("Choose the list ordering: ");
+        int opt = input.nextInt();
+        try{
+            Connection mysql = Main.connectToMySQL();
+            Statement sql = mysql.createStatement();
+            //switch(opt)
+            if(opt == 1){
+                ResultSet ascendingRS = sql.executeQuery(orderbyAscending);
+                // Get the metadata of the ResultSet
+                ResultSetMetaData rsmd = ascendingRS.getMetaData();
+                int columnsNumber = rsmd.getColumnCount();
+                System.out.println("| ID | Name | Mobile Phone | Years of Experience |");
+                // Iterate through the ResultSet, row by row
+                while (ascendingRS.next()) {
+                    // Iterate through each column of the row
+                    System.out.print("| ");
+                    for (int i = 1; i <= columnsNumber; i++) {
+                        if (i > 1) System.out.print(" | ");
+                        String columnValue = ascendingRS.getString(i);
+                        System.out.print(columnValue);
+                    }
+                    System.out.println(" |");
+                }
+            }
+            else if(opt == 2){
+                ResultSet descendingRS = sql.executeQuery(orderbyDescending);
+                // Get the metadata of the ResultSet
+                ResultSetMetaData rsmd = descendingRS.getMetaData();
+                int columnsNumber = rsmd.getColumnCount();
+                System.out.print("| ");
+                for (int i = 1; i <= columnsNumber; i++) {
+                    if (i > 1) System.out.print(" | ");
+                    System.out.print(rsmd.getColumnName(i));
+                }
+                System.out.println(" |");
+                // Iterate through the ResultSet, row by row
+                while (descendingRS.next()) {
+                    // Iterate through each column of the row
+                    System.out.print("| ");
+                    for (int i = 1; i <= columnsNumber; i++) {
+                        if (i > 1) System.out.print(" | ");
+                        String columnValue = descendingRS.getString(i);
+                        System.out.print(columnValue);
+                    }
+                    System.out.println(" |");
+                }
+            }
+            else {
+                System.out.println("[ERROR] Invalid Input");
+            }
+        } catch(Exception e){
+            System.out.println(e);
+        }
+    }
+    private static void countRecordswithRangeofExperience(){
+        String countwithRange = "SELECT s.sid, s.sName, s.sExperience, COUNT(t.sid) as transaction_count FROM salesperson s LEFT JOIN transaction t ON s.sid = t.sid WHERE s.sExperience BETWEEN ? AND ? GROUP BY s.sid ORDER BY s.sid DESC;";
+        System.out.println("Type in the lower bound for years of experience: ");
+        int opt1 = input.nextInt();
+        System.out.println("Type in the uppper bound for years of experience: ");
+        int opt2 = input.nextInt();
+        try{
+            Connection mysql = Main.connectToMySQL();
+            Statement sql = mysql.createStatement();
+            PreparedStatement countPS = mysql.prepareStatement(countwithRange);
+            countPS.setInt(1,opt1);
+            countPS.setInt(2,opt2);
+            if(opt1<=opt2){
+                countPS.setInt(1, opt1);
+                countPS.setInt(2, opt2);
+                ResultSet result=countPS.executeQuery();
+                // Get the metadata of the ResultSet
+                ResultSetMetaData rsmd = countPS.getMetaData();
+                int columnsNumber = rsmd.getColumnCount();
+                System.out.println("| ID | Name | Years of Experience | Number of Transaction");
+                // Iterate through the ResultSet, row by row
+                while (result.next()) {
+                    // Iterate through each column of the row
+                    System.out.print("| ");
+                    for (int i = 1; i <= columnsNumber; i++) {
+                        if (i > 1) System.out.print(" | ");
+                        String columnValue = result.getString(i);
+                        System.out.print(columnValue);
+                    }
+                    System.out.println(" |");
+                }
+            }
+            else {
+                System.out.println("[ERROR] Invalid Input");
+            }
+        } catch(Exception e){
+            System.out.println(e);
+        }
     }
     private static void listManufacturersByTotalSales() { 
 
