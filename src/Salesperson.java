@@ -44,12 +44,13 @@ public class Salesperson {
         System.out.println("2. Manufacturer Name");
         System.out.print("Choose the search criterion: ");
         short choice = input.nextShort();
+        input.nextLine();
         System.out.print("Type in the Search Keyword: ");
-        String keyword = input.next();
+        String keyword = input.nextLine();
         System.out.println("Choose ordering:");
         System.out.println("1. By price, ascending order");
         System.out.println("2. By price, descending order");
-        System.out.println("Choose the search criterion: ");
+        System.out.print("Choose the search criterion: ");
         short choice1 = input.nextShort();
         if((choice == 1 || choice == 2) && (choice1 == 1 || choice1 == 2) ){
             try{
@@ -74,17 +75,13 @@ public class Salesperson {
                 ResultSet rs = pstmt.executeQuery();
                 ResultSetMetaData rsmd = rs.getMetaData();
                 int columnsNumber = rsmd.getColumnCount();
-                boolean existPart = false;
+                System.out.print("| ");
+                for (int i = 1; i <= columnsNumber; i++) {
+                    System.out.print(rsmd.getColumnName(i));
+                    System.out.print(" | ");
+                }
+                System.out.println();
                 while (rs.next()) {
-                    if(!existPart){
-                        System.out.print("| ");
-                        for (int i = 1; i <= columnsNumber; i++) {
-                            System.out.print(rsmd.getColumnName(i));
-                            System.out.print(" | ");
-                        }
-                        System.out.println();
-                        existPart = true;
-                    }
                     System.out.print("| ");
                     for (int i = 1; i <= columnsNumber; i++) {
                         String columnValue = rs.getString(i);
@@ -93,9 +90,7 @@ public class Salesperson {
                     }
                     System.out.println();
                 }
-                if(!existPart){
-                    System.out.println("There is no part name which contains " + keyword);
-                }
+                System.out.println("End of query.");
             }
             catch(Exception e){
                 System.out.println(e);
