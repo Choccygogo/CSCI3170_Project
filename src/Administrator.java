@@ -136,7 +136,7 @@ public class Administrator{
                         }
 
                     try {
-                        File file = new File(path + "/manufacturer.txt");
+                        File file = new File( "./src/" + path + "/manufacturer.txt");
                         BufferedReader br = new BufferedReader(new FileReader(file)); 
                         String st;
                         int count = 0;
@@ -150,7 +150,7 @@ public class Administrator{
                     }
 
                     try {
-                        File file = new File(path + "/part.txt");
+                        File file = new File( "./src/" + path + "/part.txt");
                         BufferedReader br = new BufferedReader(new FileReader(file)); 
                         String st;
                         int count = 0;
@@ -164,7 +164,7 @@ public class Administrator{
                     }
 
                     try {
-                        File file = new File(path + "/salesperson.txt");
+                        File file = new File( "./src/" + path + "/salesperson.txt");
                         BufferedReader br = new BufferedReader(new FileReader(file)); 
                         String st;
                         int count = 0;
@@ -178,7 +178,7 @@ public class Administrator{
                     }
 
                     try {
-                        File file = new File(path + "/transaction.txt");
+                        File file = new File( "./src/" + path + "/transaction.txt");
                         BufferedReader br = new BufferedReader(new FileReader(file)); 
                         String st;
                         int count = 0;
