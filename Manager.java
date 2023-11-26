@@ -79,12 +79,7 @@ public class Manager {
                 // Get the metadata of the ResultSet
                 ResultSetMetaData rsmd = descendingRS.getMetaData();
                 int columnsNumber = rsmd.getColumnCount();
-                System.out.print("| ");
-                for (int i = 1; i <= columnsNumber; i++) {
-                    if (i > 1) System.out.print(" | ");
-                    System.out.print(rsmd.getColumnName(i));
-                }
-                System.out.println(" |");
+                System.out.println("| ID | Name | Mobile Phone | Years of Experience |");
                 // Iterate through the ResultSet, row by row
                 while (descendingRS.next()) {
                     // Iterate through each column of the row
