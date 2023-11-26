@@ -1,4 +1,3 @@
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -15,13 +14,14 @@ public class Administrator{
         public static Scanner input = new Scanner(System.in);
         public static void Administrator_operation(){
         do{
+            System.out.println("\n-----Operations for administrator menu-----");
             System.out.println("What kinds of operation would like to perform?");
             System.out.println("1. Create all tables");
             System.out.println("2. Delete all tables");
             System.out.println("3. Load from datafile");
             System.out.println("4. Show content of a table");
             System.out.println("5. Return to the main menu");
-            System.out.println("Enter your choice: ");
+            System.out.print("Enter your choice: ");
 
             int option = input.nextInt();
             switch (option){
@@ -68,7 +68,7 @@ public class Administrator{
                                 + "FoREIGN KEY (sid) REFERENCES salesperson(sid)"
                                 + ");";
                     try {
-                        System.out.print("Processing...\n");
+                        System.out.print("Processing...");
                         Connection mysql = Main.connectToMySQL();
                         Statement sql = mysql.createStatement();
                         sql.executeUpdate("set foreign_key_checks = 0;");
@@ -78,7 +78,7 @@ public class Administrator{
                         sql.executeUpdate(salespersonSql);
                         sql.executeUpdate(transactionSql);
                         sql.executeUpdate("set foreign_key_checks = 1;");
-                        System.out.println("Done! Tables are created");
+                        System.out.println("Done! Database is initialized!");
                     } catch(Exception e) {
                         System.out.println(e);
                     }
@@ -90,10 +90,10 @@ public class Administrator{
                     String dropPart = "drop table if exists part";
                     String dropSalesperson = "drop table if exists salesperson";
                     String dropTransaction = "drop table if exists transaction";
-                    
+
                     String EnableFK = "set foreign_key_checks = 1";
                     try {
-                        System.out.print("Processing...\n");
+                        System.out.print("Processing...");
                         Connection mysql = Main.connectToMySQL();
                         Statement sql = mysql.createStatement();
                         sql.executeUpdate(disableFK);
@@ -103,7 +103,7 @@ public class Administrator{
                         sql.executeUpdate(dropSalesperson);
                         sql.executeUpdate(dropTransaction);
                         sql.executeUpdate(EnableFK);
-                        System.out.print("Done! Tables are deleted!\n");
+                        System.out.println("Done! Database is removed!");
                     } catch(Exception e) {
                         System.out.print(e);
                     }
@@ -114,12 +114,12 @@ public class Administrator{
                     String[][] partInfo = new String [10000][7];
                     String[][] salespersonInfo = new String [10000][5];
                     String[][] transactionInfo = new String [10000][4];
-                    
-                    System.out.println("Please enter the folder path");
+
+                    System.out.print("Please enter the folder path: ");
                     // updated
                     String path = input.next();
                     input.nextLine();
-                    System.out.print("Processing...\n");
+                    System.out.print("Processing...");
 
                     try {
                             File file = new File( "./src/" + path + "/category.txt");
@@ -134,7 +134,7 @@ public class Administrator{
                         } catch(Exception e) {
                             System.out.print(e);
                         }
-                        
+
                     try {
                         File file = new File( "./src/" + path + "/manufacturer.txt");
                         BufferedReader br = new BufferedReader(new FileReader(file)); 
@@ -148,7 +148,7 @@ public class Administrator{
                     } catch(Exception e) {
                         System.out.print(e);
                     }
-                                    
+
                     try {
                         File file = new File( "./src/" + path + "/part.txt");
                         BufferedReader br = new BufferedReader(new FileReader(file)); 
@@ -162,7 +162,7 @@ public class Administrator{
                     } catch(Exception e) {
                         System.out.print(e);
                     }
-                    
+
                     try {
                         File file = new File("./src/" + path + "/salesperson.txt");
                         BufferedReader br = new BufferedReader(new FileReader(file)); 
@@ -176,7 +176,7 @@ public class Administrator{
                     } catch(Exception e) {
                         System.out.print(e);
                     }
-                
+
                     try {
                         File file = new File("./src/" + path + "/transaction.txt");
                         BufferedReader br = new BufferedReader(new FileReader(file)); 
@@ -196,7 +196,7 @@ public class Administrator{
                     String partInsert = "insert into part values(?, ?, ?, ?, ?, ?, ?)";
                     String salespersonInsert = "insert into salesperson values(?, ?, ?, ?, ?)";
                     String transactionInsert = "insert into transaction values(?, ?, ?, ?)";
-                    
+
                     try{
                         Connection mysql = Main.connectToMySQL();
                         Statement sql = mysql.createStatement();
@@ -256,11 +256,12 @@ public class Administrator{
                     System.out.println("Done! Data is inputted to the database!");
                     break;
                 case 4:
-                    System.out.println("Which table would you like to show: ");
+                    System.out.print("Which table would you like to show: ");
                     String opt1 = input.nextLine();//eliminate \n
                     //System.out.print("opt1:"+opt1);
                     String opt = input.nextLine();
                     //System.out.print("opt:"+opt);
+                    System.out.println("Content of table " + opt + ":");
                     String categoryDisplay = "select * from category;";
                     String manufacturerDisplay = "select * from manufacturer;";
                     String partDisplay = "select * from part;";

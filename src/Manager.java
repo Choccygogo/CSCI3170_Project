@@ -79,12 +79,7 @@ public class Manager {
                 // Get the metadata of the ResultSet
                 ResultSetMetaData rsmd = descendingRS.getMetaData();
                 int columnsNumber = rsmd.getColumnCount();
-                System.out.print("| ");
-                for (int i = 1; i <= columnsNumber; i++) {
-                    if (i > 1) System.out.print(" | ");
-                    System.out.print(rsmd.getColumnName(i));
-                }
-                System.out.println(" |");
+                System.out.println("| ID | Name | Mobile Phone | Years of Experience |");
                 // Iterate through the ResultSet, row by row
                 while (descendingRS.next()) {
                     // Iterate through each column of the row
@@ -106,9 +101,9 @@ public class Manager {
     }
     private static void countRecordswithRangeofExperience(){
         String countwithRange = "SELECT s.sid, s.sName, s.sExperience, COUNT(t.sid) as transaction_count FROM salesperson s LEFT JOIN transaction t ON s.sid = t.sid WHERE s.sExperience BETWEEN ? AND ? GROUP BY s.sid ORDER BY s.sid DESC;";
-        System.out.println("Type in the lower bound for years of experience: ");
+        System.out.print("Type in the lower bound for years of experience: ");
         int opt1 = input.nextInt();
-        System.out.println("Type in the uppper bound for years of experience: ");
+        System.out.print("Type in the uppper bound for years of experience: ");
         int opt2 = input.nextInt();
         try{
             Connection mysql = Main.connectToMySQL();
@@ -151,31 +146,31 @@ public class Manager {
                      "JOIN transaction t ON p.pid = t.pid " + 
                      "GROUP BY m.mid, m.mname " + 
                      "ORDER BY totalSalesValue DESC;";
-    
+
         try {
-    
+
             Connection mysql = Main.connectToMySQL();
-    
+
             Statement stmt = mysql.createStatement();
-    
+
             ResultSet rs = stmt.executeQuery(sql);
-    
+
             System.out.println("| Manufacturer ID | Manufacturer Name | Total Sales Value |");
-    
+
             while (rs.next()) {
-    
+
                 System.out.println("| " + rs.getString("mid") + " | " + rs.getString("mname") + " | " + rs.getString("totalSalesValue") + " |");
-    
+
             }
-    
+
         } catch (Exception e) {
-    
+
             System.out.println(e);
-    
+
         }
-    
+
     }
-    
+
     private static void listTopNPopularParts(int N) {
         String sql = "SELECT p.pid, p.pname, COUNT(t.tid) as totalTransaction " + 
                      "FROM part p " + 
@@ -183,29 +178,29 @@ public class Manager {
                      "GROUP BY p.pid, p.pname " + 
                      "ORDER BY totalTransaction DESC " + 
                      "LIMIT " + N + ";"; 
-    
+
         try {
-    
+
             Connection mysql = Main.connectToMySQL();
-    
+
             Statement stmt = mysql.createStatement();
-    
+
             ResultSet rs = stmt.executeQuery(sql);
-    
+
             System.out.println("| Part ID | Part Name | No. of Transaction |");
-    
+
             while (rs.next()) {
-    
+
                 System.out.println("| " + rs.getString("pid") + " | " + rs.getString("pname") + " | " + rs.getString("totalTransaction") + " |");
-    
+
             }
-    
+
         } catch (Exception e) { 
-    
+
             System.out.println(e);
-    
+
         }
-    
+
     }
-    
+
 }
